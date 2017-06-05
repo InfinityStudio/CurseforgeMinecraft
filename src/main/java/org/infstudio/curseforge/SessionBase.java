@@ -42,12 +42,12 @@ public abstract class SessionBase<T> implements CurseForgeService.Session<T>
 				'}';
 	}
 
-	protected Document request(String url, String method, Map<String, Object> header) throws IOException
+	protected Document request(String url, String method, Map<String, Object> args) throws IOException
 	{
+		if (args != null)
+			url += "?" + args.entrySet().stream().map(e -> e.getKey() + "=" + e.getValue()).reduce((a, b) -> a + "&"
+					+ b).get();
 		HttpURLConnection connection = (HttpURLConnection) new URL(url).openConnection();
-		if (header != null)
-			for (Map.Entry<String, Object> h : header.entrySet())
-				connection.setRequestProperty(h.getKey(), h.getValue().toString());
 		connection.setRequestMethod(method);
 		connection.setConnectTimeout(connectionTimeout);
 		connection.setReadTimeout(readTimeout);

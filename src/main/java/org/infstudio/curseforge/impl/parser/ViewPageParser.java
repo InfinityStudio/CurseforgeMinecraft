@@ -23,14 +23,13 @@ public class ViewPageParser implements CurseForgeViewPageParser
 			CurseForgeCategory> pathToCategory)
 	{
 		Elements projectItems = document.getElementsByClass("project-list-item");
-		List<CurseForgeProject> projects = new ArrayList<>(projectItems.size());
-		for (Element item : projectItems)
+		return projectItems.stream().map(item ->
 		{
 			Element detail = item.child(1);
 			Element infoName = detail.child(0);
 			Element infoStat = detail.child(1);
 			Element nameElement = infoName.child(0).child(0);
-			projects.add(new CurseForgeProject(
+			return new CurseForgeProject(
 					nameElement.text(),
 					detail.child(3).child(0).text(),
 					nameElement.attr("href"),
@@ -39,9 +38,8 @@ public class ViewPageParser implements CurseForgeViewPageParser
 					infoName.child(1).child(0).text(),
 					infoStat.child(0).text(),
 					new Date(Long.parseLong(infoStat.child(1).child(0).attr("data-epoch"))),
-					projectType));
-		}
-		return projects;
+					projectType);
+		}).collect(Collectors.toList());
 	}
 
 	private Pattern matchPage = Pattern.compile("(page=)(\\d+)");

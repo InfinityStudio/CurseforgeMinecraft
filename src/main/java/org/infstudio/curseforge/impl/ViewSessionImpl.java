@@ -80,7 +80,7 @@ public class ViewSessionImpl extends SessionBase<CurseForgeProject> implements C
 		return ROOT + (category != null ? category.getPath() : projectType.getPath());
 	}
 
-	protected void buildHeader(Map<String, Object> header)
+	protected void buildArgs(Map<String, Object> header)
 	{
 		if (versionCode != null)
 			header.put("filter-game-version", versionCode.getCode());
@@ -93,15 +93,15 @@ public class ViewSessionImpl extends SessionBase<CurseForgeProject> implements C
 	public void refresh() throws IOException
 	{
 		String url = buildURL();
-		Map<String, Object> header = new TreeMap<>();
-		buildHeader(header);
-		Document document = request(url, "GET", header);
+		this.page = 1;
+		Map<String, Object> args = new TreeMap<>();
+		buildArgs(args);
+		Document document = request(url, "GET", args);
 		if (document == null) throw new IllegalStateException("Error");
 		checkCache(document);
 		List<CurseForgeProject> proj = parser.parsePageItem(document, projectType, this.categoryMap);
 		this.cache.clear();
 		this.cache.addAll(proj);
-
 		this.maxPage = this.parser.parseMaxPage(document);
 	}
 
@@ -111,9 +111,9 @@ public class ViewSessionImpl extends SessionBase<CurseForgeProject> implements C
 		if ((page + 1) > this.maxPage) return false;
 		++page;
 		String url = buildURL();
-		Map<String, Object> header = new TreeMap<>();
-		buildHeader(header);
-		Document document = request(url, "GET", header);
+		Map<String, Object> args = new TreeMap<>();
+		buildArgs(args);
+		Document document = request(url, "GET", args);
 		List<CurseForgeProject> proj = parser.parsePageItem(document, projectType, this.categoryMap);
 		cache.addAll(proj);
 		return true;
