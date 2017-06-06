@@ -2,6 +2,7 @@ package net.infstudio.curseforge.crawler;
 
 import net.infstudio.curseforge.*;
 
+import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.net.URL;
@@ -17,24 +18,28 @@ import java.util.concurrent.Executors;
  */
 public class SimpleCrawler
 {
-	public void start() throws IOException
+	public void start(File root) throws IOException
 	{
+		if (root.isFile()) throw new IOException();
+		root.mkdirs();
 		ExecutorService executorService = Executors.newFixedThreadPool(4);
 		CurseForgeService service = CurseForgeServices.createDefault();
 		CurseForgeService.LinearRequester<CurseForgeProject> requester = service.view(CurseForgeProjectType.Mods);
 		for (int i = 0; i < requester.getMaxPage(); i++)
-			executorService.submit(new ProjectIterate(service, requester, i));
+			executorService.submit(new ProjectIterate(root, service, requester, i));
 	}
-
 
 	private class ProjectIterate implements Callable<Void>
 	{
+		File root;
 		CurseForgeService service;
 		CurseForgeService.LinearRequester<CurseForgeProject> requester;
 		int i;
 
-		ProjectIterate(CurseForgeService service, CurseForgeService.LinearRequester<CurseForgeProject> requester, int i)
+		ProjectIterate(File root, CurseForgeService service, CurseForgeService.LinearRequester<CurseForgeProject>
+				requester, int i)
 		{
+			this.root = root;
 			this.service = service;
 			this.requester = requester;
 			this.i = i;
@@ -51,7 +56,7 @@ public class SimpleCrawler
 					for (CurseForgeProjectArtifact art : artifact.requestContent(j))
 					{
 						ReadableByteChannel rbc = Channels.newChannel(new URL(art.getDownloadURL()).openStream());
-						FileOutputStream fos = new FileOutputStream(art.getFileName());
+						FileOutputStream fos = new FileOutputStream(new File(root, art.getFileName()));
 						fos.getChannel().transferFrom(rbc, 0, Long.MAX_VALUE);
 					}
 			}
