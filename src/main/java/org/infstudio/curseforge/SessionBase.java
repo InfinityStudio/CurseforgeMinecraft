@@ -10,6 +10,7 @@ import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 
 /**
  * Indicate a simple cache for a listStr of projects
@@ -45,8 +46,8 @@ public abstract class SessionBase<T> implements CurseForgeService.Session<T>
 	protected Document request(String url, String method, Map<String, Object> args) throws IOException
 	{
 		if (args != null)
-			url += "?" + args.entrySet().stream().map(e -> e.getKey() + "=" + e.getValue()).reduce((a, b) -> a + "&"
-					+ b).get();
+			url += args.entrySet().stream().map(e -> e.getKey() + "=" + e.getValue()).reduce((a, b) -> a + "&"
+					+ b).map(s -> "?" + s).orElse("");
 		HttpURLConnection connection = (HttpURLConnection) new URL(url).openConnection();
 		connection.setRequestMethod(method);
 		connection.setConnectTimeout(connectionTimeout);

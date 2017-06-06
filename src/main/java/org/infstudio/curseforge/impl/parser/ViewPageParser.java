@@ -1,11 +1,11 @@
 package org.infstudio.curseforge.impl.parser;
 
 import org.infstudio.curseforge.*;
+import org.infstudio.curseforge.parser.CurseForgeViewPageParser;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 
-import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;

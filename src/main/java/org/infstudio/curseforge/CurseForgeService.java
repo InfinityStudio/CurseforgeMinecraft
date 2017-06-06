@@ -12,25 +12,53 @@ import java.util.Map;
  */
 public interface CurseForgeService
 {
+	/**
+	 * The session of the curse forge service.
+	 *
+	 * @param <T> The data it contained.
+	 */
 	interface Session<T>
 	{
 		List<T> getContent();
 
+		/**
+		 * Refresh the session with current setting. The content will be all clear out and replaced by the new things.
+		 */
 		void refresh() throws IOException;
 
+		/**
+		 * Grow the content, if there are more.
+		 *
+		 * @return If this operation success. True for there are more content and this grow. False for there is no more.
+		 */
 		boolean growContent() throws IOException;
 	}
 
 	interface ViewSession extends Session<CurseForgeProject>
 	{
+		/**
+		 * @return The project type of this session.
+		 */
 		CurseForgeProjectType getProjectType();
 
+		/**
+		 * @return Current filter. Might be null.
+		 */
 		String getFilterType();
 
+		/**
+		 * @param filterType The filter for the view. Get from {@link #getFilterTypes()}.
+		 */
 		void setFilterType(String filterType);
 
+		/**
+		 * @return Current version code. Might be null.
+		 */
 		VersionCode getVersionCode();
 
+		/**
+		 * @param versionCode The version constrain for this view. Get from {@link #getVersionCodes()}.
+		 */
 		void setVersionCode(VersionCode versionCode);
 
 		CurseForgeCategory getCategory();
@@ -46,7 +74,9 @@ public interface CurseForgeService
 
 	interface SearchSession extends Session<CurseForgeProject>
 	{
+		String getKeyword();
 
+		void setKeyword(String key);
 	}
 
 	interface ArtifactSession extends Session<CurseForgeProjectArtifact>
@@ -60,7 +90,7 @@ public interface CurseForgeService
 
 	ViewSession view(CurseForgeProjectType projectType) throws IOException;
 
-	Session<CurseForgeProjectArtifact> artifact(CurseForgeProject project) throws IOException;
+	ArtifactSession artifact(CurseForgeProject project) throws IOException;
 
 	class VersionCode
 	{

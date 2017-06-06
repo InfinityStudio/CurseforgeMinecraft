@@ -1,6 +1,6 @@
 package org.infstudio.curseforge.impl.parser;
 
-import org.infstudio.curseforge.CurseForgeDownloadPageParser;
+import org.infstudio.curseforge.parser.CurseForgeDownloadPageParser;
 import org.infstudio.curseforge.CurseForgeProjectArtifact;
 import org.infstudio.curseforge.utils.DataSizeUnit;
 import org.jsoup.nodes.Document;

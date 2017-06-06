@@ -1,6 +1,7 @@
 package org.infstudio.curseforge.impl;
 
 import org.infstudio.curseforge.*;
+import org.infstudio.curseforge.parser.CurseForgeDownloadPageParser;
 import org.jsoup.nodes.Document;
 
 import java.io.IOException;
