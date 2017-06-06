@@ -3,7 +3,6 @@ package net.infstudio.curseforge.impl;
 import net.infstudio.curseforge.CurseForgeProject;
 import net.infstudio.curseforge.CurseForgeProjectType;
 import net.infstudio.curseforge.CurseForgeService;
-import org.infstudio.curseforge.*;
 import net.infstudio.curseforge.parser.CurseForgeDownloadPageParser;
 import net.infstudio.curseforge.parser.CurseForgeSearchPageParser;
 import net.infstudio.curseforge.parser.CurseForgeViewPageParser;
@@ -49,8 +48,11 @@ public class CurseForgeServiceContainer implements CurseForgeService
 	public ArtifactSession artifact(CurseForgeProject project) throws IOException
 	{
 		ArtifactSessionImpl session = new ArtifactSessionImpl(downloadPageParser);
-		session.setProject(project);
-		session.refresh();
+		if (project != null)
+		{
+			session.setProject(project);
+			session.refresh();
+		}
 		return session;
 	}
 }

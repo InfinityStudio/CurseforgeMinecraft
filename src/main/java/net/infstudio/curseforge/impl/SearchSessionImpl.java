@@ -15,7 +15,8 @@ import java.util.TreeMap;
 /**
  * @author ci010
  */
-public class SearchSessionImpl extends SessionBase<CurseForgeProject> implements CurseForgeService.SearchSession
+public class SearchSessionImpl extends SessionBase<CurseForgeProject> implements CurseForgeService.SearchSession,
+																				 CurseForgeService.LinearRequester<CurseForgeProject>
 {
 	private CurseForgeSearchPageParser parser;
 	private String keyword;
@@ -68,5 +69,28 @@ public class SearchSessionImpl extends SessionBase<CurseForgeProject> implements
 	public void setKeyword(String key)
 	{
 		this.keyword = key;
+	}
+
+	@Override
+	public List<CurseForgeProject> requestContent(int page) throws IOException
+	{
+		String url = ROOT + "/search";
+		Map<String, Object> args = new TreeMap<>();
+		args.put("search", keyword);
+		args.put("page", page);
+		Document document = request(url, "GET", args);
+		return parser.parseSearchPage(document);
+	}
+
+	@Override
+	public int getPage()
+	{
+		return page;
+	}
+
+	@Override
+	public int getMaxPage()
+	{
+		return -1;
 	}
 }

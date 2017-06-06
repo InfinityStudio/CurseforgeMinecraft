@@ -2,7 +2,6 @@ package net.infstudio.curseforge.impl;
 
 import net.infstudio.curseforge.*;
 import net.infstudio.curseforge.parser.CurseForgeViewPageParser;
-import org.infstudio.curseforge.*;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 
@@ -14,7 +13,8 @@ import java.util.stream.Collectors;
 /**
  * @author ci010
  */
-public class ViewSessionImpl extends SessionBase<CurseForgeProject> implements CurseForgeService.ViewSession
+public class ViewSessionImpl extends SessionBase<CurseForgeProject> implements CurseForgeService.ViewSession,
+																			   CurseForgeService.LinearRequester<CurseForgeProject>
 {
 	private CurseForgeProjectType projectType;
 	private String filter;
@@ -182,5 +182,28 @@ public class ViewSessionImpl extends SessionBase<CurseForgeProject> implements C
 	{
 		if (categoryMap == null) Collections.emptyMap();
 		return categoryMap;
+	}
+
+	@Override
+	public List<CurseForgeProject> requestContent(int page) throws IOException
+	{
+		String url = buildURL();
+		Map<String, Object> args = new TreeMap<>();
+		buildArgs(args);
+		args.put("page", page);
+		Document document = request(url, "GET", args);
+		return parser.parsePageItem(document, projectType, this.categoryMap);
+	}
+
+	@Override
+	public int getPage()
+	{
+		return page;
+	}
+
+	@Override
+	public int getMaxPage()
+	{
+		return maxPage;
 	}
 }

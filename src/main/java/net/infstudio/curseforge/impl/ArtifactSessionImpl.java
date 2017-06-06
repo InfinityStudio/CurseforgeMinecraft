@@ -5,18 +5,21 @@ import net.infstudio.curseforge.CurseForgeProjectArtifact;
 import net.infstudio.curseforge.CurseForgeService;
 import net.infstudio.curseforge.SessionBase;
 import net.infstudio.curseforge.parser.CurseForgeDownloadPageParser;
-import org.infstudio.curseforge.*;
 import org.jsoup.nodes.Document;
 
 import java.io.IOException;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 import java.util.TreeMap;
 
 /**
  * @author ci010
  */
-public class ArtifactSessionImpl extends SessionBase<CurseForgeProjectArtifact> implements CurseForgeService.ArtifactSession
+public class ArtifactSessionImpl extends SessionBase<CurseForgeProjectArtifact> implements CurseForgeService
+																								   .ArtifactSession,
+																						   CurseForgeService
+																								   .LinearRequester<CurseForgeProjectArtifact>
 {
 	private CurseForgeProject project;
 	private CurseForgeDownloadPageParser parser;
@@ -42,6 +45,7 @@ public class ArtifactSessionImpl extends SessionBase<CurseForgeProjectArtifact> 
 	@Override
 	public void refresh() throws IOException
 	{
+		if (project == null) throw new IllegalStateException();
 		String files = directToDownload();
 		Map<String, Object> header = new TreeMap<>();
 		buildHeader(header);
@@ -57,6 +61,7 @@ public class ArtifactSessionImpl extends SessionBase<CurseForgeProjectArtifact> 
 	@Override
 	public boolean growContent() throws IOException
 	{
+		if (project == null) throw new IllegalStateException();
 		if (page + 1 >= maxPage) return false;
 		String url = ROOT + directToDownload();
 		Map<String, Object> header = new TreeMap<>();
@@ -77,6 +82,30 @@ public class ArtifactSessionImpl extends SessionBase<CurseForgeProjectArtifact> 
 	@Override
 	public void setProject(CurseForgeProject project)
 	{
+		Objects.requireNonNull(project);
 		this.project = project;
+	}
+
+	@Override
+	public List<CurseForgeProjectArtifact> requestContent(int page) throws IOException
+	{
+		String url = ROOT + directToDownload();
+		Map<String, Object> header = new TreeMap<>();
+		buildHeader(header);
+		header.put("page", page);
+		Document doc = request(url, "GET", header);
+		return parser.parseArtifact(doc);
+	}
+
+	@Override
+	public int getPage()
+	{
+		return page;
+	}
+
+	@Override
+	public int getMaxPage()
+	{
+		return maxPage;
 	}
 }

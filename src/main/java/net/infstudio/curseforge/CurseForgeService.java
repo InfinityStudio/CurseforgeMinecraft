@@ -34,6 +34,15 @@ public interface CurseForgeService
 		boolean growContent() throws IOException;
 	}
 
+	interface LinearRequester<T>
+	{
+		List<T> requestContent(int page) throws IOException;
+
+		int getPage();
+
+		int getMaxPage();
+	}
+
 	interface ViewSession extends Session<CurseForgeProject>
 	{
 		/**
@@ -86,11 +95,11 @@ public interface CurseForgeService
 		void setProject(CurseForgeProject project);
 	}
 
-	SearchSession search(String keyword) throws IOException;
+	<R extends SearchSession & LinearRequester<CurseForgeProject>> R search(String keyword) throws IOException;
 
-	ViewSession view(CurseForgeProjectType projectType) throws IOException;
+	<R extends ViewSession & LinearRequester<CurseForgeProject>> R view(CurseForgeProjectType projectType) throws IOException;
 
-	ArtifactSession artifact(CurseForgeProject project) throws IOException;
+	<R extends ArtifactSession & LinearRequester<CurseForgeProjectArtifact>> R artifact(CurseForgeProject project) throws IOException;
 
 	class VersionCode
 	{
