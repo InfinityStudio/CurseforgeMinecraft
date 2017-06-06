@@ -1,4 +1,4 @@
-package org.infstudio.curseforge;
+package net.infstudio.curseforge;
 
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
@@ -10,7 +10,6 @@ import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
-import java.util.Optional;
 
 /**
  * Indicate a simple cache for a listStr of projects

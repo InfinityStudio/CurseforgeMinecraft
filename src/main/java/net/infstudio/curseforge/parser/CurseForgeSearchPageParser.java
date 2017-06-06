@@ -1,6 +1,6 @@
-package org.infstudio.curseforge.parser;
+package net.infstudio.curseforge.parser;
 
-import org.infstudio.curseforge.CurseForgeProject;
+import net.infstudio.curseforge.CurseForgeProject;
 import org.jsoup.nodes.Document;
 
 import java.util.List;

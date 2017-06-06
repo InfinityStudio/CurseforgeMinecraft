@@ -1,12 +1,12 @@
-package org.infstudio.curseforge;
+package net.infstudio.curseforge;
 
-import org.infstudio.curseforge.impl.CurseForgeServiceContainer;
-import org.infstudio.curseforge.impl.parser.DownloadPageParser;
-import org.infstudio.curseforge.impl.parser.SearchPageParser;
-import org.infstudio.curseforge.impl.parser.ViewPageParser;
-import org.infstudio.curseforge.parser.CurseForgeDownloadPageParser;
-import org.infstudio.curseforge.parser.CurseForgeSearchPageParser;
-import org.infstudio.curseforge.parser.CurseForgeViewPageParser;
+import net.infstudio.curseforge.impl.CurseForgeServiceContainer;
+import net.infstudio.curseforge.impl.parser.ViewPageParser;
+import net.infstudio.curseforge.parser.CurseForgeDownloadPageParser;
+import net.infstudio.curseforge.parser.CurseForgeViewPageParser;
+import net.infstudio.curseforge.impl.parser.DownloadPageParser;
+import net.infstudio.curseforge.impl.parser.SearchPageParser;
+import net.infstudio.curseforge.parser.CurseForgeSearchPageParser;
 
 /**
  * @author ci010

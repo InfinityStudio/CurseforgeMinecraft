@@ -1,7 +1,11 @@
-package org.infstudio.curseforge.impl;
+package net.infstudio.curseforge.impl;
 
+import net.infstudio.curseforge.CurseForgeProject;
+import net.infstudio.curseforge.CurseForgeProjectArtifact;
+import net.infstudio.curseforge.CurseForgeService;
+import net.infstudio.curseforge.SessionBase;
+import net.infstudio.curseforge.parser.CurseForgeDownloadPageParser;
 import org.infstudio.curseforge.*;
-import org.infstudio.curseforge.parser.CurseForgeDownloadPageParser;
 import org.jsoup.nodes.Document;
 
 import java.io.IOException;

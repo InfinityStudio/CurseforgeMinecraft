@@ -1,7 +1,10 @@
-package org.infstudio.curseforge.impl.parser;
+package net.infstudio.curseforge.impl.parser;
 
+import net.infstudio.curseforge.CurseForgeCategory;
+import net.infstudio.curseforge.CurseForgeProject;
+import net.infstudio.curseforge.CurseForgeProjectType;
+import net.infstudio.curseforge.parser.CurseForgeViewPageParser;
 import org.infstudio.curseforge.*;
-import org.infstudio.curseforge.parser.CurseForgeViewPageParser;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;

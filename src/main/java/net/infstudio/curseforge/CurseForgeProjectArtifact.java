@@ -1,4 +1,4 @@
-package org.infstudio.curseforge;
+package net.infstudio.curseforge;
 
 import java.util.Date;
 import java.util.Optional;

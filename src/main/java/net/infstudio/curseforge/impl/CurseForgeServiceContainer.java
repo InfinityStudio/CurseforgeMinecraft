@@ -1,9 +1,12 @@
-package org.infstudio.curseforge.impl;
+package net.infstudio.curseforge.impl;
 
+import net.infstudio.curseforge.CurseForgeProject;
+import net.infstudio.curseforge.CurseForgeProjectType;
+import net.infstudio.curseforge.CurseForgeService;
 import org.infstudio.curseforge.*;
-import org.infstudio.curseforge.parser.CurseForgeDownloadPageParser;
-import org.infstudio.curseforge.parser.CurseForgeSearchPageParser;
-import org.infstudio.curseforge.parser.CurseForgeViewPageParser;
+import net.infstudio.curseforge.parser.CurseForgeDownloadPageParser;
+import net.infstudio.curseforge.parser.CurseForgeSearchPageParser;
+import net.infstudio.curseforge.parser.CurseForgeViewPageParser;
 
 import java.io.IOException;
 

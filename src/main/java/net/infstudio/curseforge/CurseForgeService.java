@@ -1,4 +1,4 @@
-package org.infstudio.curseforge;
+package net.infstudio.curseforge;
 
 import java.io.IOException;
 import java.util.List;

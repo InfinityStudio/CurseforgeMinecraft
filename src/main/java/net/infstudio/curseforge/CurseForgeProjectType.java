@@ -1,4 +1,4 @@
-package org.infstudio.curseforge;
+package net.infstudio.curseforge;
 
 /**
  * @author ci010
