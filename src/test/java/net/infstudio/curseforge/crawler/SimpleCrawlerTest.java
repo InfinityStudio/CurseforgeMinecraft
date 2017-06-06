@@ -14,7 +14,7 @@ public class SimpleCrawlerTest
 	@Test
 	public void start() throws Exception
 	{
-		new SimpleCrawler().start(new File("C:\\Users\\cijhn\\Workspace\\down"));
+		new SimpleCrawler().start(new File("C:\\Users\\cijhn\\Workspace\\down"), 4);
 	}
 
 }

@@ -18,11 +18,11 @@ import java.util.concurrent.*;
  */
 public class SimpleCrawler
 {
-	public void start(File root) throws IOException
+	public void start(File root, int thread) throws IOException
 	{
 		if (root.isFile()) throw new IOException();
 		root.mkdirs();
-		ExecutorService executorService = Executors.newFixedThreadPool(4);
+		ExecutorService executorService = Executors.newFixedThreadPool(thread);
 		CurseForgeService service = CurseForgeServices.createDefault();
 		CurseForgeService.LinearRequester<CurseForgeProject> requester = service.view(CurseForgeProjectType.Mods);
 		Collection<Callable<Void>> tasks = new ArrayList<>();
@@ -62,13 +62,15 @@ public class SimpleCrawler
 			for (CurseForgeProject project : projects)
 			{
 				CurseForgeService.LinearRequester<CurseForgeProjectArtifact> artifact = service.artifact(project);
+				File parent = new File(this.root, project.getName());
+				if (!parent.exists()) parent.mkdirs();
 				for (int j = 0; j < artifact.getMaxPage(); j++)
 					for (CurseForgeProjectArtifact art : artifact.requestContent(j))
 					{
 						ReadableByteChannel rbc = Channels.newChannel(new URL(art.getDownloadURL()).openStream());
 						String fileName = art.getFileName();
 						if (!fileName.endsWith(".jar")) fileName = fileName.concat(".jar");
-						FileOutputStream fos = new FileOutputStream(new File(root, fileName));
+						FileOutputStream fos = new FileOutputStream(new File(parent, fileName));
 						fos.getChannel().transferFrom(rbc, 0, Long.MAX_VALUE);
 					}
 			}
