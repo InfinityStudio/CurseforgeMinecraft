@@ -8,10 +8,10 @@ import java.io.IOException;
 import java.net.URL;
 import java.nio.channels.Channels;
 import java.nio.channels.ReadableByteChannel;
+import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
-import java.util.concurrent.Callable;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
+import java.util.concurrent.*;
 
 /**
  * @author ci010
@@ -25,8 +25,18 @@ public class SimpleCrawler
 		ExecutorService executorService = Executors.newFixedThreadPool(4);
 		CurseForgeService service = CurseForgeServices.createDefault();
 		CurseForgeService.LinearRequester<CurseForgeProject> requester = service.view(CurseForgeProjectType.Mods);
+		Collection<Callable<Void>> tasks = new ArrayList<>();
 		for (int i = 0; i < requester.getMaxPage(); i++)
-			executorService.submit(new ProjectIterate(root, service, requester, i));
+			tasks.add(new ProjectIterate(root, service, requester, i));
+		try
+		{
+			List<Future<Void>> futures = executorService.invokeAll(tasks);
+			for (Future<Void> future : futures) {future.get();}
+		}
+		catch (InterruptedException | ExecutionException e)
+		{
+			e.printStackTrace();
+		}
 	}
 
 	private class ProjectIterate implements Callable<Void>
@@ -56,7 +66,9 @@ public class SimpleCrawler
 					for (CurseForgeProjectArtifact art : artifact.requestContent(j))
 					{
 						ReadableByteChannel rbc = Channels.newChannel(new URL(art.getDownloadURL()).openStream());
-						FileOutputStream fos = new FileOutputStream(new File(root, art.getFileName()));
+						String fileName = art.getFileName();
+						if (!fileName.endsWith(".jar")) fileName = fileName.concat(".jar");
+						FileOutputStream fos = new FileOutputStream(new File(root, fileName));
 						fos.getChannel().transferFrom(rbc, 0, Long.MAX_VALUE);
 					}
 			}
