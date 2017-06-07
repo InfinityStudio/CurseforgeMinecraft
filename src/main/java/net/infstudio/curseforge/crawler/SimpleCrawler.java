@@ -69,7 +69,8 @@ public class SimpleCrawler
 					{
 						ReadableByteChannel rbc = Channels.newChannel(new URL(art.getDownloadURL()).openStream());
 						String fileName = art.getFileName();
-						if (!fileName.endsWith(".jar")) fileName = fileName.concat(".jar");
+						if (!fileName.endsWith(".jar") || !fileName.endsWith(".litemod"))
+							fileName = fileName.concat(".jar");
 						FileOutputStream fos = new FileOutputStream(new File(parent, fileName));
 						fos.getChannel().transferFrom(rbc, 0, Long.MAX_VALUE);
 					}

@@ -1,4 +1,4 @@
-group 'infstudio'
+group 'net.infstudio'
 version '1.0-SNAPSHOT'
 
 apply plugin: 'java'
